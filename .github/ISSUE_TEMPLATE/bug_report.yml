@@ -1,0 +1,58 @@
+name: Bug report
+description: Report a reproducible Page2Knowledge defect with synthetic data.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not include real credentials, private documents, customer data, or copyrighted source content. Report security issues through Private Vulnerability Reporting.
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      placeholder: "0.2.1 or commit SHA"
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: "OS, Node.js, browser, local or Docker"
+    validations:
+      required: true
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Affected surface
+      options:
+        - Webpage extraction
+        - PDF/transcript/media ingestion
+        - Version comparison/export
+        - Knowledge search/chat
+        - Crawl/schedule
+        - API/authentication
+        - Docker/operations
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction with synthetic input
+      description: Include the smallest safe steps and expected/actual behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Sanitized diagnostics
+      description: Remove Authorization headers, document bodies, private paths, tokens, and personal data.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Safety check
+      options:
+        - label: I used synthetic data and removed all secrets and private content.
+          required: true
+        - label: This is not a vulnerability report.
+          required: true

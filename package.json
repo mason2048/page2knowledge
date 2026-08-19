@@ -1,0 +1,75 @@
+{
+  "name": "page2knowledge",
+  "version": "0.2.1",
+  "description": "Turn public webpages and local documents into source-aware, reference-only knowledge packages.",
+  "private": true,
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mason2048/page2knowledge.git"
+  },
+  "homepage": "https://github.com/mason2048/page2knowledge#readme",
+  "bugs": {
+    "url": "https://github.com/mason2048/page2knowledge/issues"
+  },
+  "keywords": [
+    "ai-agents",
+    "knowledge-base",
+    "context-package",
+    "web-extraction",
+    "local-first",
+    "rag",
+    "typescript",
+    "react"
+  ],
+  "engines": {
+    "node": "^22.13.0 || >=24.0.0"
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -k -n server,web -c blue,green \"npm:dev:server\" \"npm:dev:web\"",
+    "dev:server": "tsx watch server/index.ts",
+    "dev:web": "vite",
+    "build": "tsc -p tsconfig.server.json && tsc -p tsconfig.ui-test.json && tsc -p tsconfig.server.build.json && tsc -b && vite build",
+    "prestart": "node -e \"const token=(process.env.PAGE2KNOWLEDGE_ACCESS_TOKEN??'').trim(); const bytes=Buffer.byteLength(token,'utf8'); if ((process.env.NODE_ENV==='production'||token)&&bytes<32) { console.error('PAGE2KNOWLEDGE_ACCESS_TOKEN must contain at least 32 UTF-8 bytes after trimming.'); process.exit(64); }\"",
+    "start": "node dist-server/server/index.js",
+    "start:dev-server": "tsx server/index.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "benchmark:quality": "node --import tsx scripts/quality-baseline.ts",
+    "check": "npm run test && npm run build"
+  },
+  "dependencies": {
+    "@mozilla/readability": "^0.6.0",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.6.2",
+    "helmet": "^8.3.0",
+    "ipaddr.js": "^2.2.0",
+    "jsdom": "^26.1.0",
+    "lucide-react": "^0.468.0",
+    "multer": "^2.2.0",
+    "pdf-parse": "^2.4.5",
+    "pdfjs-dist": "^6.2.108",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "turndown": "^7.2.0",
+    "undici": "^7.12.0"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@types/express": "^5.0.3",
+    "@types/jsdom": "^21.1.7",
+    "@types/multer": "^2.0.0",
+    "@types/node": "^24.0.15",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@types/turndown": "^5.0.5",
+    "@vitejs/plugin-react": "^4.7.0",
+    "concurrently": "^9.2.0",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3",
+    "vite": "^7.0.5",
+    "vitest": "^3.2.4"
+  }
+}

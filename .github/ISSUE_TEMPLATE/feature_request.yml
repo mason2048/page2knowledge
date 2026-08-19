@@ -1,0 +1,33 @@
+name: Feature request
+description: Propose a bounded Page2Knowledge improvement.
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: User problem
+      description: Describe the workflow and who is affected.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: Include input, output, trust boundary, and failure behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: security
+    attributes:
+      label: Security, privacy, and operations impact
+      description: Address reference-only facts, SSRF, credentials, storage, network, Docker, and cleanup where relevant.
+    validations:
+      required: true
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope check
+      options:
+        - label: This request does not require bypassing access controls or copyright restrictions.
+          required: true

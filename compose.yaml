@@ -1,0 +1,58 @@
+name: page2knowledge
+
+services:
+  app:
+    image: "${PAGE2KNOWLEDGE_IMAGE:-page2knowledge:0.2.1}"
+    build:
+      context: .
+      target: runtime
+    init: true
+    restart: unless-stopped
+    user: "1000:1000"
+    environment:
+      NODE_ENV: production
+      PAGE2KNOWLEDGE_HOST: 0.0.0.0
+      PAGE2KNOWLEDGE_PORT: "4315"
+      PAGE2KNOWLEDGE_DATA_DIR: /data
+      PAGE2KNOWLEDGE_KNOWLEDGE_PATH: /data/knowledge-store.json
+      PAGE2KNOWLEDGE_SCHEDULER_PATH: /data/scheduler-state.json
+      PAGE2KNOWLEDGE_ALLOWED_HOSTS: "${PAGE2KNOWLEDGE_ALLOWED_HOSTS:-}"
+      PAGE2KNOWLEDGE_ALLOWED_ORIGINS: "${PAGE2KNOWLEDGE_ALLOWED_ORIGINS:-}"
+      # Compose verifies presence; npm prestart and the app verify trimmed UTF-8 length.
+      PAGE2KNOWLEDGE_ACCESS_TOKEN: "${PAGE2KNOWLEDGE_ACCESS_TOKEN:?Set a random token containing at least 32 UTF-8 bytes after trimming}"
+    ports:
+      - "127.0.0.1:${PAGE2KNOWLEDGE_HOST_PORT:-4315}:4315"
+    volumes:
+      - type: volume
+        source: page2knowledge-data
+        target: /data
+    read_only: true
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,noexec,size=64m,mode=1700,uid=1000,gid=1000
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 128
+    mem_limit: 768m
+    cpus: 1.0
+    stop_grace_period: 20s
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "const port=process.env.PAGE2KNOWLEDGE_PORT||'4315';fetch('http://127.0.0.1:'+port+'/api/health').then(r=>{if(!r.ok)throw new Error(String(r.status))}).catch(()=>process.exit(1))"
+      interval: 30s
+      timeout: 3s
+      start_period: 15s
+      retries: 3
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+
+volumes:
+  page2knowledge-data:
+    name: page2knowledge-data
