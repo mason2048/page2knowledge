@@ -47,7 +47,7 @@
     "ipaddr.js": "^2.2.0",
     "jsdom": "^26.1.0",
     "lucide-react": "^0.468.0",
-    "multer": "^2.2.0",
+    "multer": "^2.3.0",
     "pdf-parse": "^2.4.5",
     "pdfjs-dist": "^6.2.108",
     "react": "^19.1.0",
